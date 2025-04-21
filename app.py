@@ -5,6 +5,7 @@ import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+import matplotlib.ticker as ticker
 
 # Judul aplikasi
 st.title("Dashboard Segmentasi Customer Perusahaan Pembiayaan Kendaraan")
@@ -17,6 +18,36 @@ def load_data():
 df = load_data()
 st.subheader("Data Customer (Sample)")
 st.dataframe(df.head())
+
+# Visualisasi distribusi usia
+st.subheader("Distribusi Usia Customer")
+fig, ax = plt.subplots(figsize=(6, 4))
+sns.histplot(df['usia'], bins=10, kde=True, ax=ax)
+plt.xlabel("Usia")
+st.pyplot(fig)
+
+# Standarisasi fitur
+features = ['usia', 'penghasilan_bulanan', 'skor_kredit', 'lama_menjadi_nasabah']
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(df[features])
+
+# KMeans Clustering
+kmeans = KMeans(n_clusters=4, random_state=42)
+df['cluster'] = kmeans.fit_predict(scaled_data)
+
+# Visualisasi hasil cluster
+st.subheader("Visualisasi Cluster (Usia vs Penghasilan)")
+fig2, ax2 = plt.subplots(figsize=(6, 4))
+sns.scatterplot(data=df, x='usia', y='penghasilan_bulanan', hue='cluster', palette='Set2', ax=ax2)
+plt.xlabel("Usia")
+plt.ylabel("Penghasilan")
+ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f"{int(x):,}"))
+st.pyplot(fig2)
+
+# Rangkuman cluster
+st.subheader("Rangkuman Segmentasi Customer")
+st.write(df.groupby('cluster')[features].mean())
+
 
 # Standarisasi fitur numerik
 fitur_numerik = ['usia', 'penghasilan_bulanan', 'skor_kredit', 'lama_menjadi_nasabah']
