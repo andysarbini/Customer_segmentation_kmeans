@@ -10,7 +10,7 @@ from sklearn.decomposition import PCA
 st.title("Dashboard Segmentasi Customer Perusahaan Pembiayaan Kendaraan")
 
 # Load data
-@st.cache_datadef
+@st.cache_data
 def load_data():
   return pd.read_csv("data_customer.csv")
 
@@ -24,8 +24,8 @@ scaler = StandardScaler()
 scaled_features = scaler.fit_transform(df[fitur_numerik])
 
 # K-Means clustering
-kmeans = KMeans(n_cluster=4, random_state=42, n_init=10)
-df['cluster'] = kmeans.fit_redict(scaled_features)
+kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
+df['cluster'] = kmeans.fit_predict(scaled_features)
 
 # Rata-rata tiap cluster
 st.subheader("Rata-rata Tiap Cluster")
@@ -35,6 +35,7 @@ st.dataframe(df.groupby('cluster')[fitur_numerik].mean())
 pca = PCA(n_components=2)
 pca_components = pca.fit_transform(scaled_features)
 pca_df = pd.DataFrame(data=pca_components, columns=['PC1', 'PC2'])
+pca_df['cluster'] = df['cluster']
 
 st.subheader("Visualisasi Cluster Customer (PCA)")
 fig, ax = plt.subplots(figsize=(6, 4))
