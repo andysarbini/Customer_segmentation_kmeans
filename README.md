@@ -13,11 +13,10 @@ Dashboard interaktif berbasis Streamlit untuk menganalisis dan memvisualisasikan
 ## 🗂 Struktur Folder
 
 dashboard-penjualan/
-│
-├── app.py                  # Aplikasi Streamlit utama
-├── penjualan.csv           # Contoh file data penjualan (opsional)
-├── requirements.txt        # File dependensi untuk deploy
-└── README.md               # Deskripsi proyek
+├── app.py                  # Aplikasi utama Streamlit
+├── penjualan.csv           # Data penjualan contoh (opsional)
+├── requirements.txt        # Dependensi untuk deployment
+└── README.md               # Dokumen ini
 
 
 ## 🧪 Teknologi yang Digunakan
